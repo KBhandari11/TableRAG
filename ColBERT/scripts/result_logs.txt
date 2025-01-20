@@ -1,0 +1,40 @@
+---------------------------------------------------------------------
+Date: 07:44 PM, 16 January 2025
+Calculating Recall@100 and storing in wtq_full_table_k_100.ranking.tsv
+Result File Generated at data/results_full_table_colbert_k_100_test.json and Recall is 0.8151047662905826
+Calculating Recall@50 and storing in wtq_full_table_k_50.ranking.tsv
+An error occurred while processing k=50: [Errno 2] No such file or directory: 'TableRAG/src/ColBERT/experiments/wtq-test/scripts.main/2025-01/16/19.26.14/wtq_full_table_k_50.ranking.tsv'
+Stack Trace:
+Traceback (most recent call last):
+  File "scripts/retrieve_results_from_ranking.py", line 154, in <module>
+    view_results, recall = generate_result_file(int(k), generated_ranking_path, view_results)
+  File "scripts/retrieve_results_from_ranking.py", line 80, in generate_result_file
+    with open(wtq_full_table_ranking_file, 'r') as file:
+FileNotFoundError: [Errno 2] No such file or directory: 'TableRAG/src/ColBERT/experiments/wtq-test/scripts.main/2025-01/16/19.26.14/wtq_full_table_k_50.ranking.tsv'
+
+Calculating Recall@30 and storing in wtq_full_table_k_30.ranking.tsv
+Result File Generated at data/results_full_table_colbert_k_30_test.json and Recall is 0.6903062399263182
+Calculating Recall@10 and storing in wtq_full_table_k_10.ranking.tsv
+Result File Generated at data/results_full_table_colbert_k_10_test.json and Recall is 0.5641261800598665
+Calculating Recall@5 and storing in wtq_full_table_k_5.ranking.tsv
+Result File Generated at data/results_full_table_colbert_k_5_test.json and Recall is 0.48537877043518307
+Calculating Recall@1 and storing in wtq_full_table_k_1.ranking.tsv
+Result File Generated at data/results_full_table_colbert_k_1_test.json and Recall is 0.3117660603269629
+---------------------------------------------------------------------
+Date: 08:01 PM, 16 January 2025
+Calculating Recall@50 and storing in wtq_full_table_k_50.ranking.tsv
+Result File Generated at data/results_full_table_colbert_k_50_test.json and Recall is 0.7428045130094405
+---------------------------------------------------------------------
+Date: 08:31 PM, 16 January 2025
+Calculating Recall@100 and storing in wtq_only_headers_table_k_100.ranking.tsv
+Result File Generated at data/results_only_headers_colbert_k_100_test.json and Recall is 0.7096477089569422
+Calculating Recall@50 and storing in wtq_only_headers_table_k_50.ranking.tsv
+Result File Generated at data/results_only_headers_colbert_k_50_test.json and Recall is 0.6157034308081971
+Calculating Recall@30 and storing in wtq_only_headers_table_k_30.ranking.tsv
+Result File Generated at data/results_only_headers_colbert_k_30_test.json and Recall is 0.5300483536725765
+Calculating Recall@10 and storing in wtq_only_headers_table_k_10.ranking.tsv
+Result File Generated at data/results_only_headers_colbert_k_10_test.json and Recall is 0.3739350679253972
+Calculating Recall@5 and storing in wtq_only_headers_table_k_5.ranking.tsv
+Result File Generated at data/results_only_headers_colbert_k_5_test.json and Recall is 0.2848261570343081
+Calculating Recall@1 and storing in wtq_only_headers_table_k_1.ranking.tsv
+Result File Generated at data/results_only_headers_colbert_k_1_test.json and Recall is 0.12571954869905594
