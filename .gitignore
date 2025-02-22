@@ -1,3 +1,12 @@
 /data
 /results
 /ColBERT/checkpoints
+batch_script.sh
+script.sh
+result-nq.txt
+result-totto.txt
+result-wtq-indv.txt
+result-wtq.txt
+/=
+
+__pycache__/

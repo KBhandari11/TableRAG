@@ -1,4 +1,5 @@
 import random
+import pandas as pd
 import json
 import copy
 
@@ -30,10 +31,11 @@ def create_table_retrieval_dataset(list_tables, data, num_table_retrieval=50):
         random.shuffle(sampled_keys) 
         new_data_point["index"] = idx
         new_data_point["actual_table_info"] = list_tables[idx]   
-        new_data_point["list_title_tab-description_retrieval"] = (list_tables[idx]["title_table-description"], [list_tables[key]["title_table-description"] for key in sampled_keys])
-        new_data_point["list_title_column_header_retrieval"] = (list_tables[idx]["title_col_info"],[list_tables[key]["title_col_info"] for key in sampled_keys])
-        new_data_point["list_title_col_table_retrieval"] = (list_tables[idx]["title_col_table_text"],[list_tables[key]["title_col_table_text"] for key in sampled_keys])
-        new_data_point["list_exact_row_retrieval"] = (list_tables[idx]["title_col_exact"],[list_tables[key]["title_col_exact"] for key in sampled_keys])
+        new_data_point["random_retrieval_sample"] = (idx, [key for key in sampled_keys])
+        #new_data_point["list_title_tab-description_retrieval"] = (list_tables[idx]["title_table-description"], [list_tables[key]["title_table-description"] for key in sampled_keys])
+        #new_data_point["list_title_column_header_retrieval"] = (list_tables[idx]["title_col_info"],[list_tables[key]["title_col_info"] for key in sampled_keys])
+        #new_data_point["list_title_col_table_retrieval"] = (list_tables[idx]["title_col_table_text"],[list_tables[key]["title_col_table_text"] for key in sampled_keys])
+        #new_data_point["list_exact_row_retrieval"] = (list_tables[idx]["title_col_exact"],[list_tables[key]["title_col_exact"] for key in sampled_keys])
         new_data_point["summary"] = list_tables[idx]["summary"] 
         new_dataset.append(new_data_point)
     return new_dataset
@@ -177,7 +179,8 @@ def get_table_list(data):
                 if [rowidx, colidx] in d["highlighted_cells"]:
                     exact_row_info += f"{cell['value']} " 
 
-        table_list[idx] = {"summary": d["sentence_annotations"][0]["final_sentence"],
+        table_list[idx] = {"index":idx,
+                           "summary": d["sentence_annotations"][0]["final_sentence"],
                            "title_table-description": f"{d['table_page_title']} {d['table_section_title']} {d['table_section_text']}",
                            "column_header_info": header_info,
                            "title_col_info":f"{d['table_page_title']} {d['table_section_title']} {d['table_section_text']} {header_info}",
@@ -190,7 +193,7 @@ def get_table_list(data):
     return table_list
 
 if __name__ == "__main__":
-    totto_dataset_path = "./data/totto_data/totto_dev_data.jsonl" 
+    totto_dataset_path = "/gpfs/u/home/LLMG/LLMGbhnd/scratch/tableRAG_data/totto/totto_data/totto_dev_data.jsonl" 
     
     data = []
     with open(totto_dataset_path, 'r') as file:
@@ -198,8 +201,16 @@ if __name__ == "__main__":
             data.append(json.loads(line))
 
     table_list = get_table_list(data) 
-    for k in [50, 100, 200, 500]:
-        new_dataset = create_table_retrieval_dataset(table_list, data, num_table_retrieval=k)
-        with open(f"data/retrieval_data/totto_retrieval_{k}.json", 'w') as f:
+    # save the table_list as a csv file to index the data
+    table_df = pd.DataFrame([table_list[idx] for idx in table_list])
+    table_df.to_csv('/gpfs/u/home/LLMG/LLMGbhnd/scratch/tableRAG_data/totto/table_list.csv', index=False)
+
+    for n_val in [2000,"all"]: #[50, 100, 200, 500, 
+        if n_val == "all":
+            n = len(data)
+        else:
+            n = n_val
+        new_dataset = create_table_retrieval_dataset(table_list, data, num_table_retrieval=n)
+        with open(f"/gpfs/u/home/LLMG/LLMGbhnd/scratch/tableRAG_data/totto/retrieval/totto_retrieval_{n_val}.json", 'w') as f:
             json.dump(new_dataset, f, cls=CustomEncoder, indent=4)  # `indent=4` for pretty formatting
-        print(f"Data successfully saved to data/retrieval_data/totto_retrieval_{k}.json",flush=True)
+        print(f"Data successfully saved to data/retrieval_data/totto_retrieval_{n_val}.json",flush=True)
